@@ -33,6 +33,7 @@ $(()=>{
         `)
     })
 
+
     socket.on('logged_in',(data)=>{
         loginBtn.css('display','none');
         usernamebox.css('display','none');
@@ -48,7 +49,9 @@ $(()=>{
     })
 
 
-
+    socket.on('left',(data)=>{
+        chatBox.append(`<p>${data.userLeft} left</p>`)
+    })
 
 })
 

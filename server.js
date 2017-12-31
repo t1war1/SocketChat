@@ -30,6 +30,12 @@ io.on('connection',(socket)=>{
         })
     })
 
+    socket.on('disconnect',()=>{
+        socket.broadcast.emit('left',{
+            userLeft:users[socket.id]
+        });
+        console.log(`${users[socket.id]} left`)
+    })
 
 
 })
