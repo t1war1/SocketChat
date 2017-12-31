@@ -37,6 +37,18 @@ io.on('connection',(socket)=>{
         console.log(`${users[socket.id]} left`)
     })
 
+    socket.on('typing',(data)=>{
+        console.log(`${users[socket.id]} is typing..`);
+        socket.broadcast.emit('typing',{
+            userTyping:users[socket.id]
+        });
+    })
+
+
+    socket.on('noTyping',(data)=>{
+        socket.broadcast.emit('noTyping');
+    })
+
 
 })
 

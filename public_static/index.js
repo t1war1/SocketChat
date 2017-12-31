@@ -5,10 +5,13 @@ $(()=>{
     var msgBox=$('#message')
     var sendBtn=$('#send');
     var chatBox=$('#chat');
-
+    var initialMsg=msgBox.val();
+    var currMsg="";
     msgBox.css('display','none');
     chatBox.css('display','none');
     sendBtn.css('display','none');
+
+    var a=0;
 
     var usernamebox=$('#username');
     var loginBtn=$('#loginbtn');
@@ -43,9 +46,15 @@ $(()=>{
 
     })
 
-
     socket.on('someJoined',(data)=>{
         chatBox.append(`<p>${data.joinedUser} joined</p>`)
+    })
+
+    socket.on('typing',(data)=>{
+        if(a===0) {
+            chatBox.append(`<p class="typing">${data.userTyping} is typing...</p>`)
+            a=1
+        }
     })
 
 
@@ -53,5 +62,20 @@ $(()=>{
         chatBox.append(`<p>${data.userLeft} left</p>`)
     })
 
+    setInterval(()=>{
+        currMsg=msgBox.val()
+        if(currMsg==="" || currMsg===initialMsg) {
+                socket.emit('noTyping');
+        }
+        else{
+            initialMsg=currMsg;
+            socket.emit('typing');
+        }
+    },500)
+
+    socket.on('noTyping',(data)=>{
+        $('.typing').remove();
+        a=0;
+    })
 })
 
