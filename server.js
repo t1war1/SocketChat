@@ -5,7 +5,10 @@ const socketIo=require('socket.io');
 const path=require('path');
 
 var users={};
+var rooms={};
 var userlist=[];
+var roomList=[];
+
 const io=socketIo(server);
 const PORT=process.env.PORT || 2323 ;
 
@@ -13,6 +16,7 @@ io.on('connection',(socket)=>{
 
     console.log("User id : "+ socket.id);
 
+    //user login
     socket.on('login',(data)=>{
             if(userlist.indexOf(data.username)!==-1) {
                 socket.emit('logged_in',{
@@ -33,6 +37,45 @@ io.on('connection',(socket)=>{
 
     })
 
+    //room login
+    socket.on('room',(data)=>{
+        if(roomList.indexOf(data.roomName)!=-1)
+        socket.join(data.roomName,()=>{
+            if(rooms[data.roomName]!=undefined){
+                rooms[data.roomName].strength+=1;
+            }
+            else {
+                rooms[data.roomName]={
+                    strength:1
+                }
+            }
+            socket.emit('roomJoined',{
+                strength:rooms[data.roomName].strength,
+                you:users[socket.id]
+            })
+        })
+        else{
+            socket.emit('roomNotThere');
+        }
+    })
+    socket.on('room_',(data)=>{
+        socket.join(data.roomName,()=>{
+            if(rooms[data.roomName]!=undefined)
+            rooms[data.roomName].strength+=1;
+            else {
+                rooms[data.roomName] = {
+                    strength: 1
+                }
+            }
+            socket.emit('roomJoined',{
+                strength:rooms[data.roomName].strength,
+                you:users[socket.id]
+            })
+        });
+    })
+
+
+    //for message
     socket.on('msg',(data)=>{
 
         io.emit('msg',{
@@ -41,6 +84,8 @@ io.on('connection',(socket)=>{
         })
     })
 
+
+    //disconnection
     socket.on('disconnect',()=>{
         socket.broadcast.emit('left',{
             userLeft:users[socket.id]
@@ -48,10 +93,12 @@ io.on('connection',(socket)=>{
         console.log(`${users[socket.id]} left`)
     })
 
+    //virtual tyyping message
     socket.on('typing',(data)=>{
             userTyping:users[socket.id]
         });
 
+    //noTyping helper
     socket.on('noTyping',(data)=>{
         socket.broadcast.emit('noTyping');
     })
