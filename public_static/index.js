@@ -47,8 +47,8 @@ $(()=>{
             username=usernamebox.val();
             socket.emit('login',{
                 username:username
-            })
-
+            });
+            window.pJSDom[0].pJS.fn.vendors.destroypJS();
         }
     };
 
