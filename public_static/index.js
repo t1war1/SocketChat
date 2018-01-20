@@ -5,24 +5,17 @@ $(()=>{
     var msgBox=$('#message')
     var sendBtn=$('#send');
     var chatBox=$('#chat');
+
     var initialMsg=msgBox.val();
     var currMsg="";
+
     msgBox.css('display','none');
     chatBox.css('display','none');
     sendBtn.css('display','none');
 
-    var a=0;
 
     var usernamebox=$('#username');
-    var loginBtn=$('#loginbtn');
-
-    loginBtn.click(()=>{
-        username=usernamebox.val();
-        socket.emit('login',{
-            username:username
-        })
-        }
-    )
+    // var loginBtn=$('#loginbtn');
 
     sendBtn.click(()=>{
         socket.emit('msg',{
@@ -37,12 +30,39 @@ $(()=>{
     })
 
 
+    window.onkeydown= function (event) {
+        // Auto-focus the current input when a key is typed
+        if (!(event.ctrlKey || event.metaKey || event.altKey)) {
+            usernamebox.focus();
+        }
+        // When the client hits ENTER on their keyboard
+        if (event.which === 13) {
+            // if (username) {
+            //     sendMessage();
+            //     socket.emit('stop typing');
+            //     typing = false;
+            // } else {
+            //     setUsername();
+            // }
+            username=usernamebox.val();
+            socket.emit('login',{
+                username:username
+            })
+
+        }
+    };
+
+
     socket.on('logged_in',(data)=>{
-        loginBtn.css('display','none');
-        usernamebox.css('display','none');
-        msgBox.css('display','block');
-        chatBox.css('display','block');
-        sendBtn.css('display','block');
+        if(data.loginStatus===0)
+        {
+            alert('Username not available');
+            return;
+        }
+        $('#UserDetails').hide();
+        // msgBox.css('display','block');
+        // chatBox.css('display','block');
+        // sendBtn.css('display','block');
 
     })
 

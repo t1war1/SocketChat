@@ -3,9 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
     <script src="jquery.js"></script>
+    <script src="bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="index.js"></script>
+    <style>
+        body {
+            background-color: black;
+        }
+        #askname{
+            color:white;
+            font-size: 60px;
+            text-align: center;
+        }
+        #username{
+            border-top:white 2px;
+            border-left: white 2px;
+            border-right: white 2px;
+            color:white;
+            background-color: black;
+            width: 100%;
+            height: 60px;
+            font-size: 60px;
+            text-align: center;
+            outline:none  /*to remove highlight on input*/
+        }
+        #UserDetails{
+            position: absolute;
+            top: 35%;
+        }
+    </style>
 </head>
 <body>
     <div id="chatSection">
@@ -17,8 +45,22 @@
     </ul>
     </div>
 
-        <input type="text" id="username">
-        <button id="loginbtn">LOGIN</button>
+        <div class="container-fluid" id="UserDetails">
+            <div class="row">
+                 <div class="col-12" id="askname">Enter Username</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-5">
+        <input type="text" id="username"><br>
+                </div>
+                <div class="col-12">
+
+                </div>
+            </div>
+        </div>
+
+    <!--<input type="text" id="roomInput">-->
+    <!--<button id="roomBtn"></button>-->
 
 </body>
 </html>

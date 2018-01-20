@@ -4,8 +4,8 @@ const server=require('http').Server(app);
 const socketIo=require('socket.io');
 const path=require('path');
 
-var users={}
-
+var users={};
+var userlist=[];
 const io=socketIo(server);
 const PORT=process.env.PORT || 2323 ;
 
@@ -14,11 +14,22 @@ io.on('connection',(socket)=>{
     console.log("User id : "+ socket.id);
 
     socket.on('login',(data)=>{
-            users[socket.id]=data.username;
-            socket.emit('logged_in');
-            socket.broadcast.emit('someJoined',{
-                joinedUser:users[socket.id]
-            });
+            if(userlist.indexOf(data.username)!==-1) {
+                socket.emit('logged_in',{
+                    loginStatus:0
+                })
+            }
+            else
+            {
+                users[socket.id] = data.username;
+                userlist.push(data.username);
+                socket.emit('logged_in',{
+                    loginStatus:1
+                });
+            }
+            // socket.broadcast.emit('someJoined',{
+            //     joinedUser:users[socket.id]
+            // });
 
     })
 
@@ -38,12 +49,8 @@ io.on('connection',(socket)=>{
     })
 
     socket.on('typing',(data)=>{
-        console.log(`${users[socket.id]} is typing..`);
-        socket.broadcast.emit('typing',{
             userTyping:users[socket.id]
         });
-    })
-
 
     socket.on('noTyping',(data)=>{
         socket.broadcast.emit('noTyping');
