@@ -60,10 +60,19 @@
             flex: 1 1 auto;
 
         }
+        ul{
+            list-style-type: none;
+            font-size: 10px;
+        }
+
+        .mess{
+            margin: 6px;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container-fluid" id="chatSection">
+    <div class="container-fluid" id="chatSection" >
                 <div class="row" id="header">
             <div class="col-xs-12 col-md-3 p-3"  style="height: 100% ;text-align: center;">
                 ROCKETCHAT
@@ -74,20 +83,32 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3 p-3" >
-                Your Rooms:
-            </div>
-            <div class="col-md-6 p-3" >
-                <ul id="chat" style="background-color: white;height: 600px;color: black ">
-
-                    gagag
-                </ul>
-                <input type="text" id="message" style="height: 50px">
-                <button id="send" style="background-color: #1c7430;height: 60px;">SEND</button>
-            </div>
             <div class="col-md-3 p-3">
                 Users in the room
             </div>
+            <div class="col-md-9 p-3" >
+                <div id="chat" style="background-color: white;height: 600px;color: black;font-size: 16px" >
+                    <div class="media mess">
+                        <img class="mr-3" src="..." alt="Generic placeholder image">
+                        <div class="media-body">
+                            <h5 class="mt-0">Media heading</h5>
+                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        </div>
+                    </div>
+
+                    <div class="media mess">
+                        <img class="mr-3" src="..." alt="Generic placeholder image">
+                        <div class="media-body">
+                            <h5 class="mt-0">Media heading</h5>
+                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        </div>
+                    </div>
+
+                </div>
+                <input type="text" id="message" style="height: 50px">
+                <button id="send" style="background-color: #1c7430;height: 60px;">SEND</button>
+            </div>
+
         </div>
 
 

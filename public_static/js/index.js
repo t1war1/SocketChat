@@ -81,7 +81,8 @@ var loadStatus=0;
                 socket.on('roomJoined',(data)=>{
                     $('#loading').fadeOut();
                     $('#chatSection').show();
-                    chatBox.append(`<li style="border-radius: 0;">There are ${data.strength}</li><li style="border-radius: 0;>${data.you} joined</li>`);
+                    chatBox.append(`<div class="mess">There are ${data.strength}</div><div class="mess">${data.you} joined</div>`);
+
                 })
 
                 socket.on('logged_in',(data)=>{
