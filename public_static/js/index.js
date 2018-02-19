@@ -6,6 +6,7 @@ var loadStatus=0;
 
             setTimeout(()=>{
                 $('#loading').fadeOut(100);
+                let roomName="";
                 var chatSection=$('#chatSection');
                 var msgBox=$('#message')
                 var sendBtn=$('#send');
@@ -23,13 +24,20 @@ var loadStatus=0;
 
                 sendBtn.click(()=>{
                     socket.emit('msg',{
-                        message:msgBox.val()
+                        message:msgBox.val(),
+                        room:roomName
                     })
                 })
 
                 socket.on('msg',(data)=>{
-                    chatBox.append(`
-                    <li>${data.sender} : ${data.message}</li>
+                    chatBox.append(`                    
+                    <div class="media mess">
+                        <img class="mr-3" src="..." alt="Generic placeholder image">
+                        <div class="media-body">
+                            <h5 class="mt-0">${data.sender}</h5>
+                                ${data.message}
+                            </div>
+                    </div>
                     `)
                 })
 
@@ -52,7 +60,7 @@ var loadStatus=0;
                         else if(loadStatus==1)
                         {
                             loadStatus=2;
-                            let roomName=$('#roomname').val()
+                             roomName=$('#roomname').val()
                             socket.emit('room',{
                                 roomName:roomName
                             })
@@ -62,12 +70,13 @@ var loadStatus=0;
 
                 socket.on('roomNotThere',()=>{
                     let roomMessage=$('#roomMessage');
-                    roomMessage.html(`<p>Room doesn't exist. Wanna create it? <button id="yes">YES</button>  <button id="no">NO</button></p>`)
+                    roomMessage.html(`<p><Roo></Roo>m doesn't exist. Wanna create it? <button id="yes">YES</button>  <button id="no">NO</button></p>`)
                     $('#yes').click(()=>{
+                        roomName=$('#roomname').val();
                         roombox.fadeOut();
                         $('#loading').show();
                         socket.emit('room_',{
-                            roomName:$('#roomname').val()
+                            roomName:roomName
                         })
 
                     })
@@ -81,7 +90,7 @@ var loadStatus=0;
                 socket.on('roomJoined',(data)=>{
                     $('#loading').fadeOut();
                     $('#chatSection').show();
-                    chatBox.append(`<div class="mess">There are ${data.strength}</div><div class="mess">${data.you} joined</div>`);
+                    chatBox.append(`<div class="mess">There are ${data.strength} people in the room </div><div class="mess">${data.you} joined</div>`);
 
                 })
 
@@ -90,10 +99,13 @@ var loadStatus=0;
                     {
                         loadStatus:0;
                         alert('Username not available');
-                        return;
+
                     }
-                    userbox.fadeOut(100);
-                    roombox.show();
+                    else{
+                        userbox.fadeOut(100);
+                        roombox.show();
+                    }
+
                 })
 
                 socket.on('someJoined',(data)=>{

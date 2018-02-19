@@ -31,9 +31,6 @@ io.on('connection',(socket)=>{
                     loginStatus:1
                 });
             }
-            // socket.broadcast.emit('someJoined',{
-            //     joinedUser:users[socket.id]
-            // });
 
     })
 
@@ -78,7 +75,7 @@ io.on('connection',(socket)=>{
     //for message
     socket.on('msg',(data)=>{
 
-        io.emit('msg',{
+        io.to(data.room).emit('msg',{
             sender:users[socket.id],
             message:data.message
         })
