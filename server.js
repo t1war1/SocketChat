@@ -36,21 +36,22 @@ io.on('connection',(socket)=>{
 
     //room login
     socket.on('room',(data)=>{
-        if(roomList.indexOf(data.roomName)!=-1)
-        socket.join(data.roomName,()=>{
-            if(rooms[data.roomName]!=undefined){
-                rooms[data.roomName].strength+=1;
-            }
-            else {
-                rooms[data.roomName]={
-                    strength:1
+        if(roomList.indexOf(data.roomName)!==-1) {
+            socket.join(data.roomName, () => {
+                if (rooms["" + data.roomName] != undefined) {
+                    rooms[data.roomName].strength += 1;
                 }
-            }
-            socket.emit('roomJoined',{
-                strength:rooms[data.roomName].strength,
-                you:users[socket.id]
+                else {
+                    rooms[data.roomName] = {
+                        strength: 1
+                    }
+                }
+                socket.emit('roomJoined', {
+                    strength: rooms[data.roomName].strength,
+                    you: users[socket.id]
+                })
             })
-        })
+        }
         else{
             socket.emit('roomNotThere');
         }
@@ -63,6 +64,7 @@ io.on('connection',(socket)=>{
                 rooms[data.roomName] = {
                     strength: 1
                 }
+                roomList.push(data.roomName);
             }
             socket.emit('roomJoined',{
                 strength:rooms[data.roomName].strength,
