@@ -25,7 +25,7 @@ io.on('connection',(socket)=>{
             }
             else
             {
-                users[socket.id] = data.username;
+                users[""+socket.id] = data.username;
                 userlist.push(data.username);
                 socket.emit('logged_in',{
                     loginStatus:1
@@ -90,7 +90,7 @@ io.on('connection',(socket)=>{
         console.log(`${users[socket.id]} left`)
     })
 
-    //virtual tyyping message
+    //virtual typing message
     socket.on('typing',(data)=>{
             userTyping:users[socket.id]
         });

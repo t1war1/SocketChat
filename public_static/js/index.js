@@ -97,7 +97,7 @@ var loadStatus=0;
                 socket.on('logged_in',(data)=>{
                     if(data.loginStatus===0)
                     {
-                        loadStatus:0;
+                        loadStatus=0;
                         alert('Username not available');
 
                     }
